@@ -28,8 +28,8 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
 
     init {
         val pagingConfig = PagedList.Config.Builder()
-                .setPageSize(50)
-                .setPrefetchDistance(150)
+                .setPageSize(30)
+                .setPrefetchDistance(60)
                 .setEnablePlaceholders(true)
                 .build()
 

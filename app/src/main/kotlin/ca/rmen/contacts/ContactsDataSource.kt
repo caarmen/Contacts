@@ -58,7 +58,7 @@ class ContactsDataSource(context: Context) : PositionalDataSource<Contact>() {
         cursor?.let {
             for (i in startPosition until (loadSize + startPosition)) {
                 if (it.moveToPosition(i)) {
-                    contacts.add(Contact(it.getLong(0), i.toString() + " " + it.getString(1)))
+                    contacts.add(Contact(it.getLong(0), it.getString(1)))
                 }
             }
         }

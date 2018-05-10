@@ -30,6 +30,7 @@ class ContactsAdapter : PagedListAdapter<Contact, ContactViewHolder>(ContactDiff
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         val contact = getItem(position)
+        holder.binding.position.text = position.toString()
         if (contact == null) {
             holder.binding.contactDisplayName.text = holder.binding.root.context.getString(R.string.placeholder)
         } else {
