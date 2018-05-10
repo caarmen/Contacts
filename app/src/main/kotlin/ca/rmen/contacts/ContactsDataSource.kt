@@ -51,14 +51,17 @@ class ContactsDataSource(context: Context) : PositionalDataSource<Contact>() {
         if (cursor == null) {
             cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,
                     arrayOf(BaseColumns._ID, ContactsContract.Contacts.DISPLAY_NAME_PRIMARY),
-                    null, null, ContactsContract.Contacts.DISPLAY_NAME_PRIMARY)
+                    ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " NOT NULL",
+                    null, ContactsContract.Contacts.DISPLAY_NAME_PRIMARY)
             Log.v(TAG, "${cursor?.count} items")
         }
         val contacts = mutableListOf<Contact>()
         cursor?.let {
             for (i in startPosition until (loadSize + startPosition)) {
                 if (it.moveToPosition(i)) {
-                    contacts.add(Contact(it.getLong(0), it.getString(1)))
+                    val contactId = it.getLong(0)
+                    val contactDisplayName = it.getString(1)
+                    contacts.add(Contact(contactId, contactDisplayName))
                 }
             }
         }
