@@ -31,9 +31,9 @@
             android:layout_height="wrap_content"
             app:fastScrollEnabled="true"
             app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
-            app:fastScrollHorizontalTrackDrawable="@android:color/transparent"
+            app:fastScrollHorizontalTrackDrawable="@color/colorFastScrollTrack"
             app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
-            app:fastScrollVerticalTrackDrawable="@android:color/transparent"/>
+            app:fastScrollVerticalTrackDrawable="@color/colorFastScrollTrack"/>
 
     </android.support.constraint.ConstraintLayout>
 </layout>
