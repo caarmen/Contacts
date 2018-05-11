@@ -21,9 +21,12 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
+import android.content.Intent
+import android.net.Uri
+import android.provider.ContactsContract
 
-class ContactsViewModel(application: Application) : AndroidViewModel(application) {
-
+class ContactsViewModel(application: Application) : AndroidViewModel(application),
+        ContactEditListener, ContactCallListener {
     val pagedList: LiveData<PagedList<Contact>>
 
     init {
@@ -37,6 +40,21 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
 
         pagedList = LivePagedListBuilder(dataSourceFactory, pagingConfig)
                 .build()
+    }
+
+    override fun onEdit(contact: Contact) {
+        val uri = ContactsContract.Contacts.getLookupUri(contact.id, contact.lookupKey)
+        val editIntent = Intent(Intent.ACTION_EDIT)
+                .setDataAndType(uri, ContactsContract.Contacts.CONTENT_ITEM_TYPE)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        getApplication<Application>().startActivity(editIntent)
+    }
+
+    override fun onCall(phone: Phone) {
+        val uri = Uri.parse("tel:" + Uri.encode(phone.normalized))
+        val dialIntent = Intent(Intent.ACTION_DIAL, uri)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        getApplication<Application>().startActivity(dialIntent)
     }
 }
 

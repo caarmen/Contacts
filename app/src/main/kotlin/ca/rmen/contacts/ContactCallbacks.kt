@@ -16,4 +16,14 @@
 
 package ca.rmen.contacts
 
-data class Contact(val id: Long, val lookupKey: String, val displayName: String)
+interface ContactOpenCloseListener {
+    fun onOpenClose()
+}
+
+interface ContactEditListener {
+    fun onEdit(contact: Contact)
+}
+
+interface ContactCallListener {
+    fun onCall(phone: Phone)
+}
