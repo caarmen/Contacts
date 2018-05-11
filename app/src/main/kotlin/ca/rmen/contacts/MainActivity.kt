@@ -25,7 +25,6 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import ca.rmen.contacts.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -41,9 +40,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel = ViewModelProviders.of(this).get(ContactsViewModel::class.java)
-        adapter = ContactsAdapter()
-        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerView.adapter = adapter
+        adapter = ContactsAdapter(viewModel, viewModel)
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_PERMISSION)
     }
 
@@ -51,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSION
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            binding.recyclerView.adapter = adapter
             val observer: Observer<PagedList<Contact>> = Observer { t -> adapter.submitList(t) }
             viewModel.pagedList.observe(this, observer)
         }

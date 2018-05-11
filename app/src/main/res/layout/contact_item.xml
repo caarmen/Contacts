@@ -16,31 +16,94 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/listPreferredItemHeight"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:focusable="true">
+    <data>
 
-        <TextView
-            android:id="@+id/position"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="42"/>
+        <variable
+            name="contact"
+            type="ca.rmen.contacts.Contact"/>
+
+        <variable
+            name="openCloseListener"
+            type="ca.rmen.contacts.ContactOpenCloseListener"/>
+
+        <variable
+            name="editListener"
+            type="ca.rmen.contacts.ContactEditListener"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
         <TextView
             android:id="@+id/contact_display_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> openCloseListener.onOpenClose()}"
+            android:text="@{contact.displayName ?? @string/placeholder}"
             android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintBottom_toTopOf="@+id/contact_phones"
+            app:layout_constraintEnd_toStartOf="@+id/btn_edit"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/full_names"/>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/btn_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> editListener.onEdit(contact)}"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="@id/contact_display_name"
+            app:layout_constraintEnd_toStartOf="@+id/btn_open_close"
+            app:layout_constraintStart_toEndOf="@+id/contact_display_name"
+            app:layout_constraintTop_toTopOf="@id/contact_display_name"/>
+
+        <ImageView
+            android:id="@+id/btn_open_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> openCloseListener.onOpenClose()}"
+            android:src="@drawable/ic_open"
+            app:layout_constraintBottom_toBottomOf="@id/contact_display_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_edit"
+            app:layout_constraintTop_toTopOf="@id/contact_display_name"/>
+
+        <LinearLayout
+            android:id="@+id/contact_phones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_height="64dp"/>
+
+        <android.support.constraint.Group
+            android:id="@+id/contact_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="btn_edit,contact_phones"
+            tools:visibility="visible"/>
+
+    </android.support.constraint.ConstraintLayout>
 </layout>
